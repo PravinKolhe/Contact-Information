@@ -1,0 +1,91 @@
+﻿<div class='panel panel-primary'>
+    <div class='panel-heading'>
+        Contact Information
+    </div>
+    <div class='panel-body'>
+        <div class='table-responsive'>
+            <div style="padding-bottom:10px"><button class="btn btn-primary" (click)="addUser()">Add Contact</button></div>
+            <div class="alert alert-info" role="alert" *ngIf="indLoading"><img src="../../images/loading.gif" width="32" height="32" /> Loading...</div>
+            <div *ngIf='users && users.length==0' class="alert alert-info" role="alert">No record found!</div>
+            <table class='table table-striped' *ngIf='users && users.length'>
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Phone Number</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let user of users">
+                        <td>{{user.FirstName}}</td>
+                        <td>{{user.LastName}}</td>
+                        <td>{{user.Email}}</td>
+                        <td>{{user.PhoneNumber}}</td>
+                        <td>{{user.Status}}</td>
+                        <td>
+                            <button title="Edit" class="btn btn-primary" (click)="editUser(user.Id)">Edit</button>
+                            <button title="Delete" class="btn btn-danger" (click)="deleteUser(user.Id)">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div>
+            </div>
+        </div>
+        <div *ngIf="msg" role="alert" class="alert alert-info alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Error:</span>
+            {{msg}}
+        </div>
+    </div>
+</div>
+
+<modal #modal>
+    <form novalidate (ngSubmit)="onSubmit(userFrm)" [formGroup]="userFrm">
+        <modal-header [show-close]="true">
+            <h4 class="modal-title">{{modalTitle}}</h4>
+        </modal-header>
+        <modal-body>
+
+            <div class="form-group">
+                <div>
+                    <span>First Name*</span>
+                    <input type="text" placeholder="First Name" formControlName="FirstName" class="form-control">
+                    <control-messages [control]="userFrm.controls.FirstName"></control-messages>
+                </div>
+                <div>
+                    <span>Last Name</span>
+                    <input type="text" class="form-control" placeholder="Last Name" formControlName="LastName">
+                </div>
+                <div>
+                    <span>Email*</span>
+                    <input type="text" class="form-control" placeholder="Email" formControlName="Email">
+                    <control-messages [control]="userFrm.controls.Email"></control-messages>
+                </div>
+                <div>
+                    <span>Phone Number*</span>
+                    <input type="text" class="form-control" placeholder="Phone Number" formControlName="PhoneNumber">
+                    <control-messages [control]="userFrm.controls.PhoneNumber"></control-messages>
+                </div>
+                <div>
+                    <span>Status*</span>
+                    <select formControlName="Status" class="form-control">
+                        <option>Active</option>
+                        <option>Inactive</option>
+                    </select>
+                    <control-messages [control]="userFrm.controls.Status"></control-messages>
+                </div>
+            </div>
+        </modal-body>
+        <modal-footer>
+            <div>
+                <a class="btn btn-default" (click)="modal.dismiss()">Cancel</a>
+                <button type="submit" [disabled]="userFrm.invalid" class="btn btn-primary">{{modalBtnTitle}}</button>
+            </div>
+        </modal-footer>
+    </form>
+</modal>
